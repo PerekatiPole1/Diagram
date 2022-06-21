@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Верстка графика</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="js/jquery-2.2.3.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+
+
+
+<body>
+
+	<div class="container">
+		<canvas id="myChart" width="600" height="400"></canvas>
+   	</div>
+
+</body>
+<script>
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['2017 г.', '2018 г.', '2019 г.', '2020 г.', '2021 г.'],
+			datasets: [{
+				labels: ['2017 г.', '2018 г.', '2019 г.', '2020 г.', '2021 г.'],
+				data: [30, 55, 65, 75, 85],
+				backgroundColor: [
+					'rgba(194, 193, 255)',
+					'rgba(10, 159, 250)',
+					'rgba(7, 150, 157)',
+					'rgba(25, 149, 199)',
+					'rgba(75, 91, 202)',
+				],
+				borderColor: [
+					'rgba(194, 193, 255)',
+					'rgba(10, 159, 250)',
+					'rgba(7, 150, 157)',
+					'rgba(25, 149, 199)',
+					'rgba(75, 91, 202)',
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			hover: {
+			 animationDuration: 0
+			},
+			animation: {
+				duration: 1,
+				onComplete: function() {
+					var chartInstance = this.chart;
+					ctx = chartInstance.ctx;
+					ctx.font = '16px';
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'bottom';
+					this.data.datasets.forEach(function(dataset, i) {
+					var meta = chartInstance.controller.getDatasetMeta(i);
+					isFirstElement = true;
+					meta.data.forEach(function(bar, index) {
+						var data = dataset.data[index];
+						ctx.fillText((isFirstElement) ? 'Факт' : data + '%', bar._model.x, bar._model.y - 5);
+						isFirstElement = false;
+					});
+					});
+				}
+			},
+			legend: {
+				display: false
+			},
+			title: {
+				display: true,
+				text: 'Индикатор эффективности',
+				position: 'top',
+				fontSize: 20,
+				padding: 20
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						min: 0,
+						beginAtZero: true,
+						display: false
+					},
+					gridLines: {
+						drawOnChartArea: false
+					}
+				}],
+				xAxes: [{
+					ticks: {
+						text: ['2017', '2018', '2019 г.', '2020 г.', '2021 г.'],
+						fontSize: 20,
+					},
+					gridLines: {
+						drawOnChartArea: false
+					}
+				}]
+			},
+			tooltips: {
+
+                    callbacks: {
+                        title: function(){
+                            return null;
+                        },
+                        label: function(tooltipItem, data) {
+                            var multiline = ['First Line', 'second line'];
+                            return multiline;
+                        },
+
+                    },
+                    enabled: false,
+				}
+			
+		}
+		
+	});
+	</script>
+	
+
+	 
+</html>
